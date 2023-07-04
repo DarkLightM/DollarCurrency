@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_margin"
+    tools:context=".ui.home.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/currencyTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/currency_title"
+            android:textAppearance="@style/header_style"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/inputTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/input_title"
+            android:textAppearance="@style/description_style"
+            app:layout_constraintLeft_toLeftOf="@id/currencyTitle"
+            app:layout_constraintTop_toBottomOf="@id/currencyTitle" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="@dimen/default_margin"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/inputTitle"
+            app:layout_constraintLeft_toRightOf="@id/inputTitle"
+            app:layout_constraintTop_toTopOf="@id/inputTitle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/savedCurrencyValue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/moccasin"
+                android:hint="@string/saved_currency_value"
+                android:inputType="textCapSentences"
+                android:singleLine="true"
+                android:textAlignment="center"
+                android:textAppearance="@style/description_style" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/currencyList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintLeft_toLeftOf="@id/inputTitle"
+            app:layout_constraintTop_toBottomOf="@id/inputTitle">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

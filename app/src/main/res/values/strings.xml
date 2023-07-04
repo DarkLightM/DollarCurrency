@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">CurrencyTask</string>
+    <string name="currency_title">Курс доллара за последний месяц</string>
+    <string name="input_title">Введите желаемый порог цены</string>
+    <string name="saved_currency_value">100</string>
+</resources>
