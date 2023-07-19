@@ -1,18 +1,20 @@
 package com.example.currencytask.ui.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.currencytask.api.usecase.IGetCurrencyListUseCase
+import com.example.currencytask.api.repository.ICurrencyListRepository
 import com.example.currencytask.models.ValCurs
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(private val iGetCurrencyListUseCase: IGetCurrencyListUseCase) :
+class HomeViewModel @Inject constructor(private val iCurrencyListRepository: ICurrencyListRepository) :
     ViewModel() {
-    val currencyList = MutableLiveData<ValCurs>()
+    private val _currencyList = MutableLiveData<ValCurs>()
+    val currencyList: LiveData<ValCurs> get() = _currencyList
     private val currencyId = "R01235"
 
     init {
@@ -24,8 +26,8 @@ class HomeViewModel @Inject constructor(private val iGetCurrencyListUseCase: IGe
         val dateFrom =
             LocalDate.now().plusMonths(-1).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
         viewModelScope.launch {
-            currencyList.postValue(
-                iGetCurrencyListUseCase.invoke(
+            _currencyList.postValue(
+                iCurrencyListRepository.getCurrencyList(
                     dateFrom.toString(),
                     dateTo.toString(),
                     currencyId

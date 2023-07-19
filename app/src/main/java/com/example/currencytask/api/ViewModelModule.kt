@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.currencytask.di.ViewModelFactory
 import com.example.currencytask.di.ViewModelKey
 import com.example.currencytask.ui.home.HomeViewModel
-import com.example.currencytask.ui.home.SharedPrefsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -20,8 +19,4 @@ abstract class ViewModelModule {
     @ViewModelKey(HomeViewModel::class)
     abstract fun homeViewModel(homeViewModel: HomeViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(SharedPrefsViewModel::class)
-    abstract fun sharedPrefsViewModel(sharedPrefsViewModel: SharedPrefsViewModel): ViewModel
 }

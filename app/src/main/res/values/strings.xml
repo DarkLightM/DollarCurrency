@@ -3,4 +3,6 @@
     <string name="currency_title">Курс доллара за последний месяц</string>
     <string name="input_title">Введите желаемый порог цены</string>
     <string name="saved_currency_value">100</string>
+    <string name="contentTitle">Изменение цены</string>
+    <string name="contentText">Цена поднялась</string>
 </resources>

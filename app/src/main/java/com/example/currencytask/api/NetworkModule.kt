@@ -9,13 +9,15 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 
 @Module
 class NetworkModule {
+
+    private val baseUrl = "http://cbr.ru/scripts/"
     @Provides
     fun provideCurrencyApi(): CurrencyService {
         val xmlMapper = XmlMapper()
         val retrofit =
             Retrofit.Builder()
                 .addConverterFactory(JacksonConverterFactory.create(xmlMapper))
-                .baseUrl("http://cbr.ru/scripts/")
+                .baseUrl(baseUrl)
                 .build()
         return retrofit.create()
     }

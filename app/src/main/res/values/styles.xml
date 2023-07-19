@@ -2,7 +2,7 @@
 <resources>
     <style name="header_style">
         <item name="android:textSize">
-            18sp
+            22sp
         </item>
         <item name="android:letterSpacing">
             0.05
@@ -26,7 +26,7 @@
 
     <style name="description_style">
         <item name="android:textSize">
-            13sp
+            16sp
         </item>
 
         <item name="android:letterSpacing">

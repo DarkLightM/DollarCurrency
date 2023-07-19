@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import com.example.currencytask.databinding.FragmentHomeBinding
 import androidx.fragment.app.viewModels
 import com.example.currencytask.MainApplication
+import com.example.currencytask.api.repository.shared_prefs.ISharedPrefsRepository
 import com.example.currencytask.di.ViewModelFactory
 import com.example.currencytask.models.Currency
 import javax.inject.Inject
@@ -21,8 +22,10 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
+    @Inject
+    lateinit var iSharedPrefsRepository: ISharedPrefsRepository
+
     private val homeViewModel by viewModels<HomeViewModel> { viewModelFactory }
-    private val sharedPrefsViewModel by viewModels<SharedPrefsViewModel> { viewModelFactory }
     private var _binding: FragmentHomeBinding? = null
 
     private val binding get() = _binding!!
@@ -45,14 +48,14 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val savedCurrencyValue = binding.savedCurrencyValue
-        savedCurrencyValue.setText(sharedPrefsViewModel.loadDefaultCurrency())
+        savedCurrencyValue.setText(iSharedPrefsRepository.getDefaultCurrency())
         savedCurrencyValue.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val inputValue = s.toString()
-                sharedPrefsViewModel.saveDefaultCurrency(inputValue)
+                iSharedPrefsRepository.setDefaultCurrency(inputValue)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -60,7 +63,6 @@ class HomeFragment : Fragment() {
         })
 
         requireContext().startForegroundService(Intent(context, NotificationService::class.java))
-
 
         homeViewModel.currencyList.observe(viewLifecycleOwner) {
             setCurrency(it.records?.reversed())

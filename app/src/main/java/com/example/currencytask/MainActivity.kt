@@ -10,13 +10,17 @@ import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.currencytask.databinding.ActivityMainBinding
+import com.example.currencytask.ui.home.HomeFragment
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val notificationPermissionCode = 123
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         MainApplication.appComponent.inject(this)
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -27,6 +31,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 requestNotificationPermission()
             }
         }
+        val container = binding.container
+        val homeFragment = HomeFragment()
+
+        supportFragmentManager.beginTransaction()
+            .replace(container.id, homeFragment)
+            .commit()
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
