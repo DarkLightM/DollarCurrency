@@ -2,6 +2,7 @@ package com.example.currencytask.api.repository.shared_prefs
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.currencytask.DEFAULT_CURRENCY
 import javax.inject.Inject
 
 class SharedPrefsRepository @Inject constructor(context: Context): ISharedPrefsRepository {

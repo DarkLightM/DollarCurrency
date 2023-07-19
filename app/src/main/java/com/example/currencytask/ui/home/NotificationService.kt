@@ -10,6 +10,10 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import androidx.core.app.NotificationCompat
+import com.example.currencytask.CHANNEL_ID
+import com.example.currencytask.CHANNEL_NAME
+import com.example.currencytask.CURRENCY_ID
+import com.example.currencytask.DATE_PATTERN
 import com.example.currencytask.MainActivity
 import com.example.currencytask.MainApplication
 import com.example.currencytask.R
@@ -34,9 +38,6 @@ class NotificationService : Service() {
 
     private lateinit var notificationManager: NotificationManager
     private val serviceScope = CoroutineScope(Dispatchers.Default)
-    private val currencyId = "R01235"
-    private val channelId = "12345"
-    private val datePattern = "dd/MM/yyyy"
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -61,11 +62,11 @@ class NotificationService : Service() {
             handler.run {
                 serviceScope.launch {
                     val defaultCurrency = iSharedPrefsRepository.getDefaultCurrency()
-                    val dateTo = LocalDate.now().format(DateTimeFormatter.ofPattern(datePattern))
+                    val dateTo = LocalDate.now().format(DateTimeFormatter.ofPattern(DATE_PATTERN))
                     val dateFrom =
                         LocalDate.now().plusMonths(-1)
-                            .format(DateTimeFormatter.ofPattern(datePattern))
-                    val currencyList = iCurrencyListRepository.getCurrencyList(dateFrom, dateTo, currencyId)
+                            .format(DateTimeFormatter.ofPattern(DATE_PATTERN))
+                    val currencyList = iCurrencyListRepository.getCurrencyList(dateFrom, dateTo, CURRENCY_ID)
 
                     if (currencyList.records?.reversed()?.get(0)?.value?.let {
                             compareStringsAsNumbers(
@@ -91,13 +92,12 @@ class NotificationService : Service() {
             PendingIntent.FLAG_IMMUTABLE
         )
         val notificationId = 101
-        val channelName = "Currency Update"
 
         val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(channelId, channelName, importance)
+        val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
         notificationManager.createNotificationChannel(channel)
 
-        val builder = NotificationCompat.Builder(this, channelId)
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_dollar)
             .setContentTitle(getString(R.string.contentTitle))
             .setContentText(getString(R.string.contentText))
