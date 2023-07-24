@@ -10,8 +10,6 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import androidx.core.app.NotificationCompat
-import com.example.currencytask.CHANNEL_ID
-import com.example.currencytask.CHANNEL_NAME
 import com.example.currencytask.CURRENCY_ID
 import com.example.currencytask.DATE_PATTERN
 import com.example.currencytask.MainActivity
@@ -29,6 +27,12 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class NotificationService : Service() {
+
+    companion object {
+        private const val CHANNEL_ID = "12345"
+
+        private const val CHANNEL_NAME = "Currency Update"
+    }
 
     @Inject
     lateinit var iCurrencyListRepository: ICurrencyListRepository
@@ -66,7 +70,8 @@ class NotificationService : Service() {
                     val dateFrom =
                         LocalDate.now().plusMonths(-1)
                             .format(DateTimeFormatter.ofPattern(DATE_PATTERN))
-                    val currencyList = iCurrencyListRepository.getCurrencyList(dateFrom, dateTo, CURRENCY_ID)
+                    val currencyList =
+                        iCurrencyListRepository.getCurrencyList(dateFrom, dateTo, CURRENCY_ID)
 
                     if (currencyList.records?.reversed()?.get(0)?.value?.let {
                             compareStringsAsNumbers(

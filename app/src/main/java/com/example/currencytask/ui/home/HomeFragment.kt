@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import com.example.currencytask.databinding.FragmentHomeBinding
 import androidx.fragment.app.viewModels
 import com.example.currencytask.MainApplication
-import com.example.currencytask.api.repository.shared_prefs.ISharedPrefsRepository
 import com.example.currencytask.di.ViewModelFactory
 import com.example.currencytask.models.Currency
 import javax.inject.Inject
@@ -22,13 +21,8 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    @Inject
-    lateinit var iSharedPrefsRepository: ISharedPrefsRepository
-
     private val homeViewModel by viewModels<HomeViewModel> { viewModelFactory }
-    private var _binding: FragmentHomeBinding? = null
-
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onAttach(context: Context) {
         MainApplication.appComponent.inject(this)
@@ -40,7 +34,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -48,14 +42,17 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val savedCurrencyValue = binding.savedCurrencyValue
-        savedCurrencyValue.setText(iSharedPrefsRepository.getDefaultCurrency())
+        homeViewModel.defaultCurrency.observe(viewLifecycleOwner){
+            savedCurrencyValue.setText(it)
+        }
+
         savedCurrencyValue.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val inputValue = s.toString()
-                iSharedPrefsRepository.setDefaultCurrency(inputValue)
+                homeViewModel.setDefaultCurrency(inputValue)
             }
 
             override fun afterTextChanged(s: Editable?) {

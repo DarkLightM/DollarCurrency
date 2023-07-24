@@ -7,19 +7,27 @@ import androidx.lifecycle.viewModelScope
 import com.example.currencytask.CURRENCY_ID
 import com.example.currencytask.DATE_PATTERN
 import com.example.currencytask.api.repository.ICurrencyListRepository
+import com.example.currencytask.api.repository.shared_prefs.ISharedPrefsRepository
 import com.example.currencytask.models.ValCurs
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(private val iCurrencyListRepository: ICurrencyListRepository) :
+class HomeViewModel @Inject constructor(
+    private val iCurrencyListRepository: ICurrencyListRepository,
+    private val iSharedPrefsRepository: ISharedPrefsRepository
+) :
     ViewModel() {
     private val _currencyList = MutableLiveData<ValCurs>()
     val currencyList: LiveData<ValCurs> get() = _currencyList
 
+    private val _defaultCurrency = MutableLiveData<String>()
+    val defaultCurrency: LiveData<String> get() = _defaultCurrency
+
     init {
         getCurrencyList()
+        getDefaultCurrency()
     }
 
     private fun getCurrencyList() {
@@ -34,6 +42,18 @@ class HomeViewModel @Inject constructor(private val iCurrencyListRepository: ICu
                     CURRENCY_ID
                 )
             )
+        }
+    }
+
+    private fun getDefaultCurrency() {
+        viewModelScope.launch {
+            _defaultCurrency.postValue(iSharedPrefsRepository.getDefaultCurrency())
+        }
+    }
+
+    fun setDefaultCurrency(currency: String) {
+        viewModelScope.launch {
+            iSharedPrefsRepository.setDefaultCurrency(currency)
         }
     }
 }

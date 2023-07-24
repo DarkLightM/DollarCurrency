@@ -17,7 +17,7 @@
         android:label="Dollar Currency"
         android:roundIcon="@drawable/ic_dollar"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CurrencyTask"
+        android:theme="@style/Theme.Design.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
